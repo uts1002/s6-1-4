@@ -175,6 +175,22 @@
   }
   .mission-pending.hidden { display: none; }
 
+  /* QR 코드 */
+  .qr-section {
+    margin: 20px auto 0;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.1);
+    padding: 14px 22px;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.25);
+  }
+  .qr-box { background: #fff; padding: 6px; border-radius: 10px; line-height: 0; }
+  .qr-label { font-size: 0.85rem; opacity: 0.85; margin: 0; }
+  .qr-url { font-size: 0.75rem; opacity: 0.65; margin: 0; font-family: monospace; letter-spacing: 0.5px; }
+
   /* 최종 미션 */
   .final-mission {
     background: linear-gradient(135deg, rgba(255,215,0,0.3), rgba(255,107,157,0.25), rgba(192,132,252,0.25));
@@ -315,6 +331,11 @@
   <div class="gift-banner">
     <span class="gift-icon">🎁</span><strong>모든 미션을 완수하면 선물</strong>이 기다리고 있어요!<br>
     카드를 하나씩 풀면서 아래로 내려가 봐요 ✨
+  </div>
+  <div class="qr-section">
+    <div class="qr-box" id="qrcode"></div>
+    <p class="qr-label">📱 QR 코드로 바로 접속</p>
+    <p class="qr-url">6-1-4.eompage.com</p>
   </div>
 </header>
 
