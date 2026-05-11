@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌍 지구의 운동 - 6학년 과학 4단원</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Malgun Gothic', sans-serif;
+    background: linear-gradient(180deg, #0a0e27 0%, #1a1e4a 50%, #2d1b69 100%);
+    color: #fff; min-height: 100vh; overflow-x: hidden;
+  }
+  .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+  .star { position: absolute; background: white; border-radius: 50%; animation: twinkle 3s infinite; }
+  @keyframes twinkle { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+  header { position: relative; z-index: 2; text-align: center; padding: 50px 20px 30px; }
+  header h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    margin-bottom: 12px;
+  }
+  header h1 .gradient-text {
+    background: linear-gradient(90deg, #ffd700, #ff6b9d, #c084fc, #60a5fa);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    animation: gradient-shift 5s ease infinite; background-size: 200% 200%;
+    display: inline-block;
+  }
+  @keyframes gradient-shift { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+  header .subtitle { font-size: 1.05rem; opacity: 0.85; margin-bottom: 14px; }
+  header .badge {
+    display: inline-block; background: rgba(255,255,255,0.1);
+    padding: 6px 16px; border-radius: 20px; font-size: 0.85rem;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .gift-banner {
+    margin: 20px auto 0; max-width: 640px;
+    background: linear-gradient(135deg, rgba(255,215,0,0.22), rgba(255,107,157,0.22));
+    border: 2px solid rgba(255,215,0,0.55);
+    border-radius: 18px; padding: 16px 22px;
+    font-size: 1rem; box-shadow: 0 4px 24px rgba(255,215,0,0.2); line-height: 1.6;
+  }
+  .gift-banner .gift-icon { font-size: 1.5rem; display: inline-block; animation: bounce 1.5s infinite; margin-right: 4px; }
+  @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10, 14, 39, 0.92);
+    backdrop-filter: blur(10px); padding: 10px 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  nav ul { display: flex; justify-content: center; list-style: none; gap: 6px; flex-wrap: wrap; padding-bottom: 8px; }
+  nav a {
+    color: #fff; text-decoration: none;
+    padding: 7px 14px; border-radius: 18px;
+    transition: all 0.3s; font-size: 0.88rem;
+    background: rgba(255,255,255,0.05);
+  }
+  nav a:hover { background: rgba(255, 215, 0, 0.3); transform: translateY(-2px); }
+  .progress-meta { font-size: 0.78rem; text-align: right; opacity: 0.85; padding: 0 4px 4px; }
+  .progress-meta strong { color: #ffd700; }
+  .progress-track {
+    height: 6px; background: rgba(255,255,255,0.08);
+    border-radius: 3px; overflow: hidden; margin-bottom: 4px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ffd700, #ff6b9d, #c084fc);
+    width: 0%; transition: width 0.6s ease;
+  }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; position: relative; z-index: 2; }
+  section {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 24px; padding: 40px 30px; margin-bottom: 40px;
+    backdrop-filter: blur(10px); scroll-margin-top: 110px;
+  }
+  .locked-section { display: none; }
+  .locked-section.visible { display: block; animation: slideIn 0.7s ease-out; }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  section h2 { font-size: 1.8rem; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+  section h2 .emoji { font-size: 2.2rem; filter: drop-shadow(0 0 10px rgba(255,215,0,0.5)); }
+  section h3 { font-size: 1.3rem; margin: 24px 0 12px; color: #ffd700; }
+  section p { line-height: 1.8; font-size: 1.05rem; margin-bottom: 12px; opacity: 0.95; }
+  .highlight { background: linear-gradient(90deg, rgba(255,215,0,0.3), rgba(255,107,157,0.3)); padding: 2px 8px; border-radius: 6px; font-weight: 600; }
+  .definition {
+    background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,107,157,0.15));
+    border-left: 4px solid #ffd700; padding: 20px; border-radius: 12px; margin: 20px 0;
+  }
+  .definition .label { color: #ffd700; font-weight: 700; font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 6px; }
+
+  /* ===== 미션 카드 ===== */
+  .mission-card {
+    background: linear-gradient(135deg, rgba(255,215,0,0.18), rgba(255,107,157,0.18));
+    border: 2px solid rgba(255,215,0,0.45);
+    border-radius: 20px; padding: 28px 24px;
+    margin: 36px auto 8px; max-width: 600px;
+    text-align: center; position: relative;
+    box-shadow: 0 6px 25px rgba(255,215,0,0.15);
+  }
+  .mission-card::after {
+    content: '✨'; position: absolute;
+    top: 10px; right: 14px; font-size: 1.5rem;
+    animation: twinkle 2s infinite;
+  }
+  .mission-tag {
+    display: inline-block;
+    background: linear-gradient(90deg, #ffd700, #ff6b9d);
+    color: #1a1a2e; padding: 5px 16px; border-radius: 20px;
+    font-size: 0.85rem; font-weight: 700;
+    margin-bottom: 14px; letter-spacing: 0.5px;
+  }
+  .mission-q { font-size: 1.1rem; margin-bottom: 18px; opacity: 0.95; font-weight: 600; line-height: 1.5; }
+  .trace-wrapper { display: inline-block; position: relative; margin: 6px 0; }
+  .trace-bg {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.22);
+    font-family: inherit; font-size: 1.5rem; font-weight: 700;
+    letter-spacing: 0.06em;
+    pointer-events: none; user-select: none; z-index: 0;
+  }
+  .trace-field {
+    position: relative; z-index: 1;
+    background: transparent;
+    border: 2px dashed rgba(255,215,0,0.55);
+    border-radius: 12px; color: #fff;
+    font-family: inherit; font-size: 1.5rem; font-weight: 700;
+    padding: 12px 18px; text-align: center;
+    letter-spacing: 0.06em; outline: none;
+    width: calc(var(--len, 4) * 1.5em + 1.5em);
+    min-width: 6em; transition: all 0.3s;
+  }
+  .trace-field:focus {
+    border-color: #ffd700;
+    background: rgba(255,215,0,0.08);
+    box-shadow: 0 0 0 4px rgba(255,215,0,0.15);
+  }
+  .trace-field.correct {
+    border-style: solid; border-color: #22c55e;
+    background: rgba(34,197,94,0.18); color: #4ade80;
+    box-shadow: 0 0 0 4px rgba(34,197,94,0.15);
+  }
+  .mission-success {
+    margin-top: 16px; color: #4ade80; font-weight: 600;
+    font-size: 0.95rem; opacity: 0; transform: translateY(8px);
+    transition: all 0.4s;
+  }
+  .mission-success.show { opacity: 1; transform: translateY(0); }
+
+  /* 미션 카드 지연 표시 */
+  .mission-card.delayed { display: none; }
+  .mission-card.mission-appear { animation: missionAppear 0.8s ease-out; }
+  @keyframes missionAppear {
+    from { opacity: 0; transform: translateY(40px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .mission-pending {
+    text-align: center; padding: 22px 18px;
+    color: rgba(255,255,255,0.55);
+    font-style: italic; font-size: 0.95rem;
+    margin: 30px auto 8px; max-width: 540px;
+    background: rgba(255,255,255,0.03);
+    border: 1px dashed rgba(255,255,255,0.18);
+    border-radius: 14px; line-height: 1.6;
+  }
+  .mission-pending .pending-icon {
+    display: inline-block; font-size: 1.4rem;
+    margin-right: 6px;
+    animation: bounce 2s infinite;
+  }
+  .mission-pending.hidden { display: none; }
+
+  /* 최종 미션 */
+  .final-mission {
+    background: linear-gradient(135deg, rgba(255,215,0,0.3), rgba(255,107,157,0.25), rgba(192,132,252,0.25));
+    border: 3px solid rgba(255,215,0,0.7);
+    box-shadow: 0 0 40px rgba(255,215,0,0.25);
+    padding: 36px 30px; text-align: center;
+  }
+  .final-mission .gift-box {
+    font-size: 4rem; margin-bottom: 16px; display: inline-block;
+    animation: bounce 1.2s infinite;
+  }
+  .final-mission h2 { justify-content: center; margin-bottom: 16px; }
+  .secret-message {
+    background: rgba(255,255,255,0.1);
+    border: 2px dashed rgba(255,215,0,0.6);
+    border-radius: 14px; padding: 20px 16px;
+    margin: 24px auto; max-width: 480px;
+    font-size: 1.2rem; font-weight: 700; font-style: italic;
+    color: #ffd700; box-shadow: 0 0 25px rgba(255,215,0,0.2);
+  }
+  .final-mission .whisper { font-size: 0.9rem; opacity: 0.8; font-style: italic; }
+  .final-mission .reward { margin-top: 20px; font-size: 1.15rem; }
+
+  /* 자전 데모 */
+  .earth-rotation-demo {
+    display: flex; justify-content: center; align-items: center;
+    padding: 40px; position: relative; min-height: 320px;
+    gap: 60px; flex-wrap: wrap;
+  }
+  .sun-fixed { font-size: 5rem; filter: drop-shadow(0 0 20px #ffd700); }
+  .earth-svg { width: 220px; height: 260px; }
+  .earth-surface { animation: rotate-earth 12s linear infinite; }
+  @keyframes rotate-earth {
+    from { transform: translateX(0); }
+    to { transform: translateX(-120px); }
+  }
+
+  .day-night { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+  .day-card, .night-card { padding: 24px; border-radius: 16px; text-align: center; }
+  .day-card { background: linear-gradient(135deg, #ffd700, #ff8c00); color: #1a1a2e; }
+  .night-card { background: linear-gradient(135deg, #1e3a8a, #312e81); }
+  .day-card .icon, .night-card .icon { font-size: 3rem; display: block; margin-bottom: 8px; }
+  .day-card h4, .night-card h4 { font-size: 1.3rem; margin-bottom: 8px; }
+
+  /* 공전 */
+  .orbit-demo { position: relative; width: 100%; max-width: 500px; aspect-ratio: 1; margin: 30px auto; }
+  .orbit-path { position: absolute; inset: 10%; border: 2px dashed rgba(255,255,255,0.3); border-radius: 50%; }
+  .sun-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4rem; filter: drop-shadow(0 0 25px #ffd700); }
+  .earth-orbit { position: absolute; inset: 10%; animation: orbit 60s linear infinite; }
+  @keyframes orbit { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+  .mini-earth-wrapper {
+    position: absolute; top: -28px; left: 50%;
+    margin-left: -28px; width: 56px; height: 56px;
+    animation: counter-orbit 60s linear infinite;
+  }
+  @keyframes counter-orbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  .mini-earth { width: 100%; height: 100%; display: block; }
+  .mini-surface { animation: mini-rotate 1s linear infinite; }
+  @keyframes mini-rotate { from { transform: translateX(0); } to { transform: translateX(-32px); } }
+  .season-marker {
+    position: absolute; width: 60px; height: 60px;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; font-size: 0.75rem; text-align: center;
+  }
+  .season-marker .season-emoji { font-size: 1.5rem; }
+  .season-spring { top: 0; left: 50%; transform: translate(-50%, -120%); }
+  .season-summer { top: 50%; left: 0; transform: translate(-120%, -50%); }
+  .season-autumn { bottom: 0; left: 50%; transform: translate(-50%, 120%); }
+  .season-winter { top: 50%; right: 0; transform: translate(120%, -50%); }
+
+  .constellation-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 20px 0; }
+  .const-card {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 16px; padding: 20px; text-align: center;
+    transition: transform 0.3s; cursor: pointer;
+  }
+  .const-card:hover { transform: translateY(-6px); border-color: #ffd700; }
+  .const-card .season { font-size: 0.8rem; color: #ffd700; letter-spacing: 2px; margin-bottom: 8px; }
+  .const-card .const-emoji { font-size: 3rem; margin-bottom: 12px; display: block; }
+  .const-card h4 { font-size: 1.2rem; margin-bottom: 8px; }
+  .const-card p { font-size: 0.9rem; opacity: 0.85; line-height: 1.5; }
+
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; background: rgba(255,255,255,0.05); border-radius: 12px; overflow: hidden; }
+  th, td { padding: 14px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  th { background: rgba(255,215,0,0.2); color: #ffd700; font-weight: 700; }
+  td:first-child { font-weight: 600; background: rgba(255,255,255,0.03); }
+
+  .key-points { list-style: none; padding: 0; }
+  .key-points li {
+    background: rgba(255,255,255,0.05); padding: 14px 20px; border-radius: 10px;
+    margin-bottom: 10px; border-left: 4px solid #60a5fa; line-height: 1.6;
+  }
+  .key-points li::before { content: '✨ '; margin-right: 8px; }
+
+  .quiz-container { background: linear-gradient(135deg, rgba(192,132,252,0.15), rgba(96,165,250,0.15)); border-radius: 16px; padding: 24px; margin: 20px 0; }
+  .quiz-question { font-size: 1.15rem; margin-bottom: 16px; font-weight: 600; }
+  .quiz-options { display: grid; gap: 10px; }
+  .quiz-option {
+    background: rgba(255,255,255,0.08); border: 2px solid rgba(255,255,255,0.15);
+    color: #fff; padding: 14px 18px; border-radius: 10px;
+    text-align: left; cursor: pointer; transition: all 0.2s;
+    font-size: 1rem; font-family: inherit;
+  }
+  .quiz-option:hover { background: rgba(255,255,255,0.15); border-color: #ffd700; }
+  .quiz-option.correct { background: rgba(34,197,94,0.3); border-color: #22c55e; }
+  .quiz-option.wrong { background: rgba(239,68,68,0.3); border-color: #ef4444; }
+  .quiz-feedback { margin-top: 12px; padding: 12px; border-radius: 8px; display: none; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct { background: rgba(34,197,94,0.2); border-left: 4px solid #22c55e; }
+  .quiz-feedback.wrong { background: rgba(239,68,68,0.2); border-left: 4px solid #ef4444; }
+  .score-display { text-align: center; padding: 20px; background: linear-gradient(135deg, #ffd700, #ff6b9d); color: #1a1a2e; border-radius: 16px; margin-top: 20px; display: none; }
+  .score-display.show { display: block; }
+  .score-display h3 { font-size: 1.5rem; color: #1a1a2e; margin-bottom: 8px; }
+
+  .standards { background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.3); padding: 20px; border-radius: 12px; margin-top: 20px; }
+  .standards h4 { color: #60a5fa; margin-bottom: 10px; font-size: 1rem; letter-spacing: 1px; }
+  .standards li { margin-left: 20px; margin-bottom: 6px; line-height: 1.6; }
+
+  footer { text-align: center; padding: 40px 20px; opacity: 0.6; font-size: 0.85rem; position: relative; z-index: 2; }
+
+  @media (max-width: 600px) {
+    .day-night { grid-template-columns: 1fr; }
+    section { padding: 24px 18px; }
+    .sun-fixed { font-size: 3.5rem; }
+    nav a { padding: 6px 10px; font-size: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<header>
+  <h1>🌍 <span class="gradient-text">지구의 운동</span> 🌌</h1>
+  <p class="subtitle">하루와 1년, 지구는 어떻게 움직일까?</p>
+  <span class="badge">📘 6학년 과학 · 2022 개정 교육과정</span>
+  <div class="gift-banner">
+    <span class="gift-icon">🎁</span><strong>모든 미션을 완수하면 선물</strong>이 기다리고 있어요!<br>
+    카드를 하나씩 풀면서 아래로 내려가 봐요 ✨
+  </div>
+</header>
+
+<nav>
+  <ul>
+    <li><a href="#intro">🚀 시작</a></li>
+    <li><a href="#rotation">🌍 자전</a></li>
+    <li><a href="#day-night">🌗 낮과밤</a></li>
+    <li><a href="#revolution">🌌 공전</a></li>
+    <li><a href="#constellations">⭐ 별자리</a></li>
+    <li><a href="#summary">📝 정리</a></li>
+    <li><a href="#quiz">🎯 퀴즈</a></li>
+  </ul>
+  <div class="progress-meta"><strong id="progressCount">0</strong> / 6 미션 완료</div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+</nav>
+
+<div class="container">
+
+  <!-- 1. 시작 -->
+  <section id="intro">
+    <h2><span class="emoji">🚀</span> 우주 여행을 시작해요!</h2>
+    <p>안녕! 우리가 살고 있는 <span class="highlight">지구</span>는 가만히 있을까요? 아니에요! 지구는 지금 이 순간에도 <strong>두 가지 운동</strong>을 하고 있어요.</p>
+
+    <div class="definition">
+      <div class="label">🎯 단원 학습 목표</div>
+      <p>지구의 <strong>자전</strong>과 <strong>공전</strong>을 이해하고, 이로 인해 나타나는 <strong>낮과 밤</strong>, <strong>계절별 별자리 변화</strong>를 설명할 수 있어요.</p>
+    </div>
+
+    <h3>🤔 두 가지 운동, 무엇이 다를까?</h3>
+    <table>
+      <thead><tr><th>구분</th><th>🌍 자전</th><th>🌌 공전</th></tr></thead>
+      <tbody>
+        <tr><td>회전 중심</td><td>지구 자전축</td><td>태양</td></tr>
+        <tr><td>걸리는 시간</td><td>하루 (24시간)</td><td>1년 (365일)</td></tr>
+        <tr><td>방향</td><td>서 → 동</td><td>서 → 동</td></tr>
+        <tr><td>나타나는 현상</td><td>낮과 밤</td><td>계절별 별자리 변화</td></tr>
+      </tbody>
+    </table>
+
+    <div class="mission-card">
+      <div class="mission-tag">🎯 미션 1</div>
+      <p class="mission-q">지구가 자전축을 중심으로 스스로 도는 운동의 이름은?</p>
+      <div class="trace-wrapper">
+        <span class="trace-bg">자전</span>
+        <input class="trace-field" data-answer="자전" data-next="#rotation" autocomplete="off" />
+      </div>
+      <div class="mission-success">✨ 좋아요! 자전에 대해 더 알아볼까요?</div>
+    </div>
+  </section>
+
+  <!-- 2. 자전 -->
+  <section id="rotation" class="locked-section">
+    <h2><span class="emoji">🌍</span> 1. 지구의 자전</h2>
+
+    <div class="definition">
+      <div class="label">📖 정의</div>
+      <p><strong>지구의 자전</strong>이란 지구가 <span class="highlight">자전축을 중심으로 하루에 한 바퀴씩</span> 스스로 도는 것을 말해요.</p>
+    </div>
+
+    <div class="earth-rotation-demo">
+      <div class="sun-fixed">☀️</div>
+      <svg class="earth-svg" viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <clipPath id="earthClip"><circle cx="100" cy="120" r="60"/></clipPath>
+          <radialGradient id="earthGrad" cx="35%" cy="30%">
+            <stop offset="0%" stop-color="#60a5fa"/>
+            <stop offset="60%" stop-color="#2563eb"/>
+            <stop offset="100%" stop-color="#1e3a8a"/>
+          </radialGradient>
+          <radialGradient id="sphereShade" cx="32%" cy="28%" r="75%">
+            <stop offset="0%" stop-color="rgba(255,255,255,0.4)"/>
+            <stop offset="50%" stop-color="rgba(255,255,255,0)"/>
+            <stop offset="85%" stop-color="rgba(0,0,0,0.18)"/>
+            <stop offset="100%" stop-color="rgba(0,0,0,0.55)"/>
+          </radialGradient>
+        </defs>
+        <!-- 자전축 -->
+        <g transform="rotate(23.5 100 120)">
+          <line x1="100" y1="20" x2="100" y2="220" stroke="#ff6b9d" stroke-width="2" stroke-dasharray="5,4"/>
+          <circle cx="100" cy="20" r="4" fill="#ff6b9d"/>
+          <circle cx="100" cy="220" r="4" fill="#ff6b9d"/>
+          <text x="100" y="14" fill="#ff6b9d" font-size="11" font-weight="bold" text-anchor="middle">N극</text>
+          <text x="100" y="234" fill="#ff6b9d" font-size="11" font-weight="bold" text-anchor="middle">S극</text>
+        </g>
+        <!-- 지구 -->
+        <g transform="rotate(23.5 100 120)">
+          <circle cx="100" cy="120" r="60" fill="url(#earthGrad)"/>
+          <g clip-path="url(#earthClip)">
+            <g class="earth-surface">
+              <g>
+                <path d="M 65 95 Q 80 85 95 92 Q 100 105 88 115 Q 70 114 65 105 Z" fill="#86efac" opacity="0.95"/>
+                <path d="M 105 128 Q 125 124 138 138 Q 134 156 116 154 Q 102 144 105 128 Z" fill="#86efac" opacity="0.95"/>
+                <path d="M 78 148 Q 90 145 95 158 Q 88 164 78 160 Z" fill="#fbbf24" opacity="0.9"/>
+              </g>
+              <g transform="translate(120 0)">
+                <path d="M 65 95 Q 80 85 95 92 Q 100 105 88 115 Q 70 114 65 105 Z" fill="#86efac" opacity="0.95"/>
+                <path d="M 105 128 Q 125 124 138 138 Q 134 156 116 154 Q 102 144 105 128 Z" fill="#86efac" opacity="0.95"/>
+                <path d="M 78 148 Q 90 145 95 158 Q 88 164 78 160 Z" fill="#fbbf24" opacity="0.9"/>
+              </g>
+              <g transform="translate(-120 0)">
+                <path d="M 65 95 Q 80 85 95 92 Q 100 105 88 115 Q 70 114 65 105 Z" fill="#86efac" opacity="0.95"/>
+                <path d="M 105 128 Q 125 124 138 138 Q 134 156 116 154 Q 102 144 105 128 Z" fill="#86efac" opacity="0.95"/>
+                <path d="M 78 148 Q 90 145 95 158 Q 88 164 78 160 Z" fill="#fbbf24" opacity="0.9"/>
+              </g>
+            </g>
+          </g>
+          <circle cx="100" cy="120" r="60" fill="url(#sphereShade)" pointer-events="none"/>
+          <line x1="40" y1="120" x2="160" y2="120" stroke="#fde047" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.75"/>
+        </g>
+      </svg>
+    </div>
+    <p style="text-align:center; opacity:0.85; font-style:italic; font-size:0.92rem;">↑ <strong style="color:#ff6b9d;">분홍 점선</strong>=자전축, <strong style="color:#fde047;">노란 점선</strong>=적도</p>
+
+    <h3>🧭 자전의 방향과 속도</h3>
+    <ul class="key-points">
+      <li><strong>방향</strong>: 서쪽 → 동쪽</li>
+      <li><strong>주기</strong>: 약 24시간에 한 바퀴 (= 하루)</li>
+      <li><strong>자전축</strong>: 북극과 남극을 잇는 가상의 직선 (약 23.5° 기울어짐)</li>
+    </ul>
+
+    <h3>☀️🌙 자전으로 나타나는 현상</h3>
+    <p>지구가 자전하기 때문에 우리는 매일 <strong>태양과 달이 동쪽에서 떠서 서쪽으로 지는 것</strong>처럼 보여요. 실제로는 태양과 달이 움직이는 게 아니라, <span class="highlight">지구가 도는 것</span>이랍니다!</p>
+
+    <div class="mission-card">
+      <div class="mission-tag">🎯 미션 2</div>
+      <p class="mission-q">지구의 자전 때문에 매일 바뀌는 두 가지는?</p>
+      <div class="trace-wrapper">
+        <span class="trace-bg">낮과 밤</span>
+        <input class="trace-field" data-answer="낮과 밤" data-next="#day-night" autocomplete="off" />
+      </div>
+      <div class="mission-success">✨ 맞아요! 이번엔 낮과 밤이 왜 생기는지 알아봐요!</div>
+    </div>
+  </section>
+
+  <!-- 3. 낮과 밤 -->
+  <section id="day-night" class="locked-section">
+    <h2><span class="emoji">🌗</span> 2. 낮과 밤이 생기는 까닭</h2>
+    <p>지구는 둥글기 때문에 태양 빛을 받는 곳과 받지 못하는 곳이 동시에 생겨요.</p>
+
+    <div class="day-night">
+      <div class="day-card">
+        <span class="icon">☀️</span><h4>낮</h4><p>태양 빛을 <strong>받는 쪽</strong></p>
+      </div>
+      <div class="night-card">
+        <span class="icon">🌙</span><h4>밤</h4><p>태양 빛을 <strong>받지 못하는 쪽</strong></p>
+      </div>
+    </div>
+
+    <h3>🔄 낮과 밤은 왜 바뀔까?</h3>
+    <p>지구가 <strong>자전</strong>하면서 같은 장소가 태양 쪽을 향했다가, 태양 반대쪽을 향했다가를 반복하기 때문이에요.</p>
+    <ul class="key-points">
+      <li>태양을 향한 쪽 → <strong>낮</strong></li>
+      <li>지구가 돌아서 태양 반대쪽 → <strong>밤</strong></li>
+      <li>24시간마다 낮과 밤이 한 번씩 바뀜</li>
+    </ul>
+
+    <div class="definition">
+      <div class="label">🌏 한국이 낮일 때, 지구 반대편은?</div>
+      <p>대한민국이 한낮일 때 지구 반대편(예: 브라질)은 <strong>한밤중</strong>이에요!</p>
+    </div>
+
+    <div class="mission-card">
+      <div class="mission-tag">🎯 미션 3</div>
+      <p class="mission-q">지구가 태양을 중심으로 1년에 한 바퀴 도는 운동은?</p>
+      <div class="trace-wrapper">
+        <span class="trace-bg">공전</span>
+        <input class="trace-field" data-answer="공전" data-next="#revolution" autocomplete="off" />
+      </div>
+      <div class="mission-success">✨ 정답! 이번엔 공전을 만나러 가요!</div>
+    </div>
+  </section>
+
+  <!-- 4. 공전 -->
+  <section id="revolution" class="locked-section">
+    <h2><span class="emoji">🌌</span> 3. 지구의 공전</h2>
+
+    <div class="definition">
+      <div class="label">📖 정의</div>
+      <p><strong>지구의 공전</strong>이란 지구가 <span class="highlight">태양을 중심으로 1년에 한 바퀴씩</span> 도는 것을 말해요.</p>
+    </div>
+
+    <div class="orbit-demo">
+      <div class="orbit-path"></div>
+      <div class="sun-center">☀️</div>
+      <div class="earth-orbit">
+        <div class="mini-earth-wrapper">
+          <svg class="mini-earth" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <clipPath id="miniClip"><circle cx="28" cy="28" r="22"/></clipPath>
+              <radialGradient id="miniGrad" cx="35%" cy="30%">
+                <stop offset="0%" stop-color="#60a5fa"/>
+                <stop offset="100%" stop-color="#1e3a8a"/>
+              </radialGradient>
+              <radialGradient id="miniShade" cx="32%" cy="28%" r="75%">
+                <stop offset="0%" stop-color="rgba(255,255,255,0.45)"/>
+                <stop offset="55%" stop-color="rgba(255,255,255,0)"/>
+                <stop offset="100%" stop-color="rgba(0,0,0,0.55)"/>
+              </radialGradient>
+            </defs>
+            <g transform="rotate(23.5 28 28)">
+              <line x1="28" y1="2" x2="28" y2="54" stroke="#ff6b9d" stroke-width="1.2" stroke-dasharray="3,2" opacity="0.8"/>
+              <circle cx="28" cy="28" r="22" fill="url(#miniGrad)"/>
+              <g clip-path="url(#miniClip)">
+                <g class="mini-surface">
+                  <g>
+                    <ellipse cx="20" cy="23" rx="5" ry="4" fill="#86efac" opacity="0.95"/>
+                    <ellipse cx="32" cy="32" rx="4" ry="5" fill="#86efac" opacity="0.95"/>
+                    <circle cx="22" cy="36" r="2.5" fill="#fbbf24" opacity="0.9"/>
+                  </g>
+                  <g transform="translate(32 0)">
+                    <ellipse cx="20" cy="23" rx="5" ry="4" fill="#86efac" opacity="0.95"/>
+                    <ellipse cx="32" cy="32" rx="4" ry="5" fill="#86efac" opacity="0.95"/>
+                    <circle cx="22" cy="36" r="2.5" fill="#fbbf24" opacity="0.9"/>
+                  </g>
+                  <g transform="translate(-32 0)">
+                    <ellipse cx="20" cy="23" rx="5" ry="4" fill="#86efac" opacity="0.95"/>
+                    <ellipse cx="32" cy="32" rx="4" ry="5" fill="#86efac" opacity="0.95"/>
+                    <circle cx="22" cy="36" r="2.5" fill="#fbbf24" opacity="0.9"/>
+                  </g>
+                </g>
+              </g>
+              <circle cx="28" cy="28" r="22" fill="url(#miniShade)" pointer-events="none"/>
+              <line x1="6" y1="28" x2="50" y2="28" stroke="#fde047" stroke-width="0.8" stroke-dasharray="2,1.5" opacity="0.75"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="season-marker season-spring"><span class="season-emoji">🌸</span><span>봄</span></div>
+      <div class="season-marker season-summer"><span class="season-emoji">🌻</span><span>여름</span></div>
+      <div class="season-marker season-autumn"><span class="season-emoji">🍂</span><span>가을</span></div>
+      <div class="season-marker season-winter"><span class="season-emoji">❄️</span><span>겨울</span></div>
+    </div>
+
+    <h3>🧭 공전의 방향과 속도</h3>
+    <ul class="key-points">
+      <li><strong>방향</strong>: 서쪽 → 동쪽 (자전과 같은 방향!)</li>
+      <li><strong>주기</strong>: 약 365일에 한 바퀴 (= 1년)</li>
+    </ul>
+
+    <h3>🌟 공전으로 나타나는 현상</h3>
+    <p>지구가 태양 주위를 도는 동안 <strong>지구의 위치가 달라져요</strong>. 그래서 계절마다 보이는 <strong>별자리</strong>가 달라져요!</p>
+
+    <div class="mission-card">
+      <div class="mission-tag">🎯 미션 4</div>
+      <p class="mission-q">계절마다 밤하늘에서 다르게 보이는 것은?</p>
+      <div class="trace-wrapper">
+        <span class="trace-bg">별자리</span>
+        <input class="trace-field" data-answer="별자리" data-next="#constellations" autocomplete="off" />
+      </div>
+      <div class="mission-success">✨ 정답! 계절별 별자리를 만나러 가 봐요!</div>
+    </div>
+  </section>
+
+  <!-- 5. 별자리 -->
+  <section id="constellations" class="locked-section">
+    <h2><span class="emoji">⭐</span> 4. 계절별 별자리</h2>
+    <p>지구가 공전하면서 <strong>한밤중에 남쪽 하늘에서 보이는 별자리</strong>가 계절마다 바뀌어요!</p>
+
+    <h3>🔭 계절별 대표 별자리</h3>
+    <div class="constellation-grid">
+      <div class="const-card">
+        <div class="season">🌸 SPRING</div><span class="const-emoji">🦁</span>
+        <h4>사자자리</h4><p>봄철 남쪽 하늘. 사자가 누워있는 모양!</p>
+      </div>
+      <div class="const-card">
+        <div class="season">🌻 SUMMER</div><span class="const-emoji">🦂</span>
+        <h4>전갈자리</h4><p>여름밤 빛나는 전갈 모양의 별자리.</p>
+      </div>
+      <div class="const-card">
+        <div class="season">🍂 AUTUMN</div><span class="const-emoji">🐎</span>
+        <h4>페가수스자리</h4><p>가을밤 날개 달린 말, 페가수스!</p>
+      </div>
+      <div class="const-card">
+        <div class="season">❄️ WINTER</div><span class="const-emoji">🏹</span>
+        <h4>오리온자리</h4><p>겨울밤 가장 화려한 사냥꾼 별자리.</p>
+      </div>
+    </div>
+
+    <h3>🤔 왜 계절마다 별자리가 다를까?</h3>
+    <p>지구가 태양 주위를 공전하면서 위치가 바뀌어요. 그래서 <strong>밤하늘이 향하는 방향</strong>이 달라지죠. 태양 쪽 별자리는 너무 밝아서 안 보이고, <span class="highlight">태양 반대쪽 별자리만 한밤중에 보여요</span>.</p>
+
+    <div class="mission-card">
+      <div class="mission-tag">🎯 미션 5</div>
+      <p class="mission-q">지금까지 배운 이 단원의 이름은?</p>
+      <div class="trace-wrapper">
+        <span class="trace-bg">지구의 운동</span>
+        <input class="trace-field" data-answer="지구의 운동" data-next="#summary" autocomplete="off" />
+      </div>
+      <div class="mission-success">✨ 정리하고 퀴즈로 마무리해 봐요!</div>
+    </div>
+  </section>
+
+  <!-- 6. 정리 -->
+  <section id="summary" class="locked-section">
+    <h2><span class="emoji">📝</span> 단원 핵심 정리</h2>
+    <h3>🎯 꼭 기억해야 할 5가지</h3>
+    <ul class="key-points">
+      <li><strong>지구의 자전</strong>은 자전축을 중심으로 하루에 한 바퀴 도는 운동</li>
+      <li>자전 때문에 <strong>낮과 밤</strong>이 생김</li>
+      <li><strong>지구의 공전</strong>은 태양을 중심으로 1년에 한 바퀴 도는 운동</li>
+      <li>자전과 공전 모두 방향은 <strong>서쪽 → 동쪽</strong></li>
+      <li>공전 때문에 <strong>계절마다 보이는 별자리</strong>가 달라짐</li>
+    </ul>
+
+    <div class="standards">
+      <h4>📚 관련 성취기준 (2022 개정 교육과정)</h4>
+      <ul>
+        <li>하루 동안 태양과 달의 위치 변화를 관찰하여 <strong>지구의 자전</strong>으로 인한 현상을 설명할 수 있다.</li>
+        <li>계절에 따라 <strong>별자리가 달라지는 것</strong>을 지구의 공전으로 설명할 수 있다.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 7. 퀴즈 -->
+  <section id="quiz" class="locked-section">
+    <h2><span class="emoji">🎯</span> 단원 확인 퀴즈</h2>
+    <p>마지막 임무 전 단계! 모든 문제를 풀면 <strong>최종 미션</strong>이 열려요 🎁</p>
+    <div id="quiz-area"></div>
+    <div class="score-display" id="scoreDisplay">
+      <h3>🎉 모든 문제를 풀었어요!</h3>
+      <p id="scoreText"></p>
+    </div>
+  </section>
+
+  <!-- 8. 최종 미션 -->
+  <section id="final-mission" class="locked-section final-mission">
+    <span class="gift-box">🎁</span>
+    <h2><span class="emoji">🌟</span> 최종 미션</h2>
+    <p>축하해요! 모든 미션을 잘 완수했네요. 이제 진짜 마지막 임무가 남았답니다!</p>
+
+    <p style="margin-top: 16px;"><strong>👇 선생님께 살그머니 다가가서, 작은 목소리로 말씀드려요 👇</strong></p>
+
+    <div class="secret-message">
+      "선생님, 전 지구랑 꽤 친해진 것 같습니다."
+    </div>
+
+    <p class="whisper">🤫 (조용히 속삭이듯 말해야 해요!)</p>
+
+    <p class="reward">🍪 그럼 선생님이 <strong>맛있는 간식</strong>을 주실 거예요!</p>
+  </section>
+
+</div>
+
+<footer>
+  <p>🌟 2022 개정 교육과정 6학년 과학 · 지구의 운동 단원 🌟</p>
+  <p style="margin-top: 8px;">함께 우주를 탐험해 봐요! 🚀</p>
+</footer>
+
+<script>
+  // 별
+  const starsContainer = document.getElementById('stars');
+  for (let i = 0; i < 80; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    const size = Math.random() * 3 + 1;
+    star.style.width = size + 'px';
+    star.style.height = size + 'px';
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top = Math.random() * 100 + '%';
+    star.style.animationDelay = Math.random() * 3 + 's';
+    starsContainer.appendChild(star);
+  }
+
+  // 네비게이션
+  document.querySelectorAll('nav a').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (!target) return;
+      if (!target.classList.contains('locked-section') || target.classList.contains('visible')) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        const currentMission = document.querySelector('.trace-field:not(.correct)');
+        if (currentMission) {
+          const card = currentMission.closest('.mission-card');
+          if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          setTimeout(() => currentMission.focus(), 600);
+        }
+      }
+    });
+  });
+
+  // 미션 시스템
+  const totalMissions = 6;
+  let completedCount = 0;
+  let quizCounted = false;
+
+  // 잠긴 섹션의 미션 카드는 처음에 숨기고 "차근차근 읽어보세요" 안내 메시지 삽입
+  document.querySelectorAll('.locked-section .mission-card').forEach(card => {
+    card.classList.add('delayed');
+    const pending = document.createElement('div');
+    pending.className = 'mission-pending';
+    pending.innerHTML = '<span class="pending-icon">📖</span>천천히 다 읽어 보세요.<br>잠시 후 다음 미션이 나타나요...';
+    card.parentNode.insertBefore(pending, card);
+  });
+
+  function updateProgress() {
+    document.getElementById('progressFill').style.width = (completedCount / totalMissions * 100) + '%';
+    document.getElementById('progressCount').textContent = completedCount;
+  }
+
+  function revealSection(selector) {
+    const section = document.querySelector(selector);
+    if (!section || section.classList.contains('visible')) return;
+    section.classList.add('visible');
+    setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 400);
+    // 자동 포커싱은 하지 않음 — 학생이 본문을 읽고 스크롤해 내려올 때 미션 카드가 나타남
+    setTimeout(() => setupMissionReveal(section), 700);
+  }
+
+  function setupMissionReveal(section) {
+    const card = section.querySelector('.mission-card.delayed');
+    const pending = section.querySelector('.mission-pending');
+    if (!card || !pending) return;
+    const minReadingTime = 15000; // 최소 15초 읽기 시간 보장
+    const startTime = Date.now();
+    let triggered = false;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !triggered) {
+          triggered = true;
+          const elapsed = Date.now() - startTime;
+          const remaining = Math.max(3000, minReadingTime - elapsed);
+          setTimeout(() => {
+            pending.classList.add('hidden');
+            card.classList.remove('delayed');
+            card.classList.add('mission-appear');
+            // 미션 카드가 나타난 후에만 입력창에 포커스
+            setTimeout(() => {
+              const input = card.querySelector('.trace-field:not(.correct)');
+              if (input) input.focus();
+            }, 900);
+          }, remaining);
+          observer.unobserve(pending);
+        }
+      });
+    }, { threshold: 0.5 });
+    observer.observe(pending);
+  }
+
+  document.querySelectorAll('.trace-field').forEach(input => {
+    const answer = input.dataset.answer;
+    input.style.setProperty('--len', answer.length);
+    input.addEventListener('input', () => {
+      const value = input.value.trim().replace(/\s+/g, ' ');
+      if (value === answer) {
+        input.classList.add('correct');
+        input.readOnly = true;
+        const successMsg = input.closest('.mission-card').querySelector('.mission-success');
+        if (successMsg) successMsg.classList.add('show');
+        completedCount++;
+        updateProgress();
+        const nextSelector = input.dataset.next;
+        if (nextSelector) {
+          revealSection(nextSelector);
+          if (answer === '지구의 운동') {
+            setTimeout(() => revealSection('#quiz'), 200);
+          }
+        }
+      }
+    });
+  });
+
+  // 퀴즈
+  const quizzes = [
+    { q: "지구가 자전축을 중심으로 하루에 한 바퀴 도는 운동을 무엇이라고 할까요?",
+      options: ["공전", "자전", "회전", "운동"], answer: 1,
+      explain: "자전이에요! 지구가 스스로 도는 운동을 자전이라고 해요. 🌍" },
+    { q: "지구의 공전 주기는 얼마일까요?",
+      options: ["하루 (24시간)", "한 달 (30일)", "1년 (365일)", "100년"], answer: 2,
+      explain: "1년이에요! 지구가 태양 주위를 한 바퀴 도는 데 약 365일이 걸려요. 🌌" },
+    { q: "낮과 밤이 생기는 까닭은?",
+      options: ["지구의 공전", "지구의 자전", "달의 모양 변화", "태양이 움직이기 때문"], answer: 1,
+      explain: "지구의 자전 때문이에요! 지구가 돌면서 태양을 향한 쪽은 낮, 반대쪽은 밤이 돼요. ☀️🌙" },
+    { q: "지구의 자전과 공전 방향은?",
+      options: ["반대 방향", "같은 방향 (서→동)", "위아래 방향", "정해지지 않음"], answer: 1,
+      explain: "같은 방향이에요! 둘 다 서쪽에서 동쪽으로 돌아요. 🧭" },
+    { q: "겨울철 한밤중 남쪽 하늘에서 잘 보이는 별자리는?",
+      options: ["사자자리", "전갈자리", "페가수스자리", "오리온자리"], answer: 3,
+      explain: "오리온자리예요! 겨울밤 가장 화려하게 빛나는 사냥꾼 별자리랍니다. 🏹" },
+    { q: "계절마다 보이는 별자리가 달라지는 까닭은?",
+      options: ["별자리가 움직여서", "지구의 자전 때문", "지구의 공전 때문", "달의 영향 때문"], answer: 2,
+      explain: "지구의 공전 때문이에요! 지구가 태양 주위를 돌면서 위치가 바뀌어 보이는 별자리가 달라져요. ⭐" }
+  ];
+
+  let score = 0;
+  let answered = new Array(quizzes.length).fill(false);
+
+  function renderQuizzes() {
+    const area = document.getElementById('quiz-area');
+    area.innerHTML = '';
+    quizzes.forEach((quiz, idx) => {
+      const container = document.createElement('div');
+      container.className = 'quiz-container';
+      container.innerHTML = `
+        <div class="quiz-question">Q${idx + 1}. ${quiz.q}</div>
+        <div class="quiz-options">
+          ${quiz.options.map((opt, i) => `
+            <button class="quiz-option" data-q="${idx}" data-i="${i}">
+              ${String.fromCharCode(0x2460 + i)} ${opt}
+            </button>
+          `).join('')}
+        </div>
+        <div class="quiz-feedback" id="feedback-${idx}"></div>
+      `;
+      area.appendChild(container);
+    });
+    document.querySelectorAll('.quiz-option').forEach(btn => {
+      btn.addEventListener('click', handleAnswer);
+    });
+  }
+
+  function handleAnswer(e) {
+    const btn = e.currentTarget;
+    const qIdx = parseInt(btn.dataset.q);
+    const choice = parseInt(btn.dataset.i);
+    if (answered[qIdx]) return;
+    answered[qIdx] = true;
+    const quiz = quizzes[qIdx];
+    const correct = choice === quiz.answer;
+    const feedback = document.getElementById('feedback-' + qIdx);
+    const allOpts = document.querySelectorAll(`.quiz-option[data-q="${qIdx}"]`);
+    allOpts.forEach((o, i) => {
+      o.style.cursor = 'default';
+      if (i === quiz.answer) o.classList.add('correct');
+      else if (i === choice) o.classList.add('wrong');
+    });
+    feedback.className = 'quiz-feedback show ' + (correct ? 'correct' : 'wrong');
+    feedback.innerHTML = (correct ? '✅ 정답! ' : '❌ 아쉬워요! ') + quiz.explain;
+    if (correct) score++;
+    if (answered.every(a => a)) {
+      const display = document.getElementById('scoreDisplay');
+      const text = document.getElementById('scoreText');
+      text.textContent = `${quizzes.length}문제 중 ${score}문제 정답! ${score === quizzes.length ? '완벽해요! 🏆' : score >= quizzes.length / 2 ? '잘했어요! 👏' : '다시 복습해 볼까요? 📚'}`;
+      display.classList.add('show');
+      if (!quizCounted) {
+        quizCounted = true;
+        completedCount++;
+        updateProgress();
+      }
+      setTimeout(() => revealSection('#final-mission'), 1200);
+    }
+  }
+  renderQuizzes();
+</script>
+
+</body>
+</html>
