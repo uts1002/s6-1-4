@@ -685,7 +685,16 @@
   <p style="margin-top: 8px;">함께 우주를 탐험해 봐요! 🚀</p>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script>
+  var qr = qrcode(5, 'M');
+  qr.addData('https://6-1-4.eompage.com');
+  qr.make();
+  document.getElementById('qrcode').innerHTML = qr.createImgTag(4, 6);
+  // 생성된 img에 스타일 적용
+  var qrImg = document.querySelector('#qrcode img');
+  if (qrImg) { qrImg.style.borderRadius = '8px'; qrImg.style.display = 'block'; }
+
   // 별
   const starsContainer = document.getElementById('stars');
   for (let i = 0; i < 80; i++) {
